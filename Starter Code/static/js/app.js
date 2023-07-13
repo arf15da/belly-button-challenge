@@ -30,22 +30,43 @@ function plot_data(sample) {
         let otu_labels = result.otu_labels
 
         // Bar Chart
-        var trace1 = {
+        var bar = {
             x: sample_value.slice(0, 10).reverse(),
             y: otu_ids.slice(0, 10).map(otu_ids => ` OTU ${otu_ids}`).reverse(),
             text: otu_labels.slice(0, 10).reverse(),
             type: "bar",
             orientation: "h"
         };
-        var data = [trace1];
+        var data = [bar];
         var layout = {
             title: "Top Ten OTUs of " + sample,
         };
         Plotly.newPlot("bar", data, layout);
 
+
+        // Bubble Chart
+        var bubble = {
+            x: otu_ids,
+            y: sample_value,
+            text: otu_labels,
+            mode: 'markers',
+            marker: {
+                size: sample_value,
+                color: otu_ids,
+                colorscale: "jet"
+            }
+        };
+        var data = [bubble];
+        var layout = {
+            xaxis: { title: "OTU ID " + sample },
+
+        };
+        Plotly.newPlot('bubble', data, layout);
+
     })
 
 }
+
 // create a function init to display the data
 function init() {
     let selector = d3.select("#selDataset")
